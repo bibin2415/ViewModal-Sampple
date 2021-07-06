@@ -1,5 +1,6 @@
 package repository;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import model.WeatherResponse;
 import remote.RetrofitCall;
@@ -25,11 +26,11 @@ public class WeatherRepository implements WeatherRepositoryInterface {
     }
 
     @Override
-    public MutableLiveData<WeatherResponse> getWeather(String locationName) {
+    public LiveData<WeatherResponse> getWeather(String locationName) {
         mService.getWeather().enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
-
+                mWeatherResponseMutableLiveData.postValue(response.body());
             }
 
             @Override
